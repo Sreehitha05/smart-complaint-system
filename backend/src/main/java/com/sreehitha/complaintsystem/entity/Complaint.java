@@ -20,17 +20,29 @@ public class Complaint {
 
     private String description;
 
-    private String status;   // OPEN, ASSIGNED, etc.
+    private String status;   // OPEN, ASSIGNED, RESOLVED
 
     private String priority; // LOW, MEDIUM, HIGH
 
+    // Who created the complaint
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    // Who is assigned to handle it
     @ManyToOne
     @JoinColumn(name = "assigned_agent_id")
     private User assignedAgent;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
+
+    // Automatically set values before saving
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+
+        if (this.status == null) {
+            this.status = "OPEN";
+        }
+    }
 }
