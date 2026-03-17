@@ -28,4 +28,13 @@ public class ComplaintController {
     public List<Complaint> getByUser(@PathVariable Long userId) {
         return complaintService.getComplaintsByUser(userId);
     }
+    @PutMapping("/{id}/assign/{agentId}")
+    public Complaint assignComplaint(@PathVariable Long id,@PathVariable Long agentId) {
+        return complaintService.assignComplaint(id, agentId);
+    }
+
+    @PutMapping("/{id}/status")
+    public Complaint updateStatus(@PathVariable Long id,@RequestParam String status) {
+        return complaintService.updateStatus(id, status);
+    }
 }
